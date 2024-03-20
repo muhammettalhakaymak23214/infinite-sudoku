@@ -39,13 +39,68 @@ class _MenuPageState extends State<MenuPage> {
               color: Colors.amber,
               child: Column(
                 children: [
-                  Container(
-                    height: (mediumContainerHeight / 100) * 60,
-                    color: Colors.black,
+                  Stack(
+                    children: [
+                      Container(
+                        width: (mediumContainerHeight / 100) * 60,
+                        height: (mediumContainerHeight / 100) * 60,
+                        //color: Colors.blue,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(200)),
+                      ),
+                      Positioned(
+                          left: 75,
+                          top: 50,
+                          child: Container(
+                            width: 10,
+                            height: 100,
+                            color: Colors.red,
+                          )),
+                      Positioned(
+                          left: 125,
+                          top: 50,
+                          child: Container(
+                            width: 10,
+                            height: 100,
+                            color: Colors.red,
+                          )),
+                      Positioned(
+                          left: 50,
+                          top: 75,
+                          child: Container(
+                            width: 100,
+                            height: 10,
+                            color: Colors.red,
+                          )),
+                      Positioned(
+                          left: 50,
+                          top: 125,
+                          child: Container(
+                            width: 100,
+                            height: 10,
+                            color: Colors.red,
+                          )),
+                    ],
                   ),
                   Container(
                     height: (mediumContainerHeight / 100) * 20,
                     color: Colors.white,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 100,
+                        ),
+                        Container(
+                          height: (mediumContainerHeight / 100) * 20,
+                          width: 200,
+                          color: Colors.black,
+                        ),
+                        Container(
+                          width: 100,
+                        )
+                      ],
+                    ),
                   ),
                   Container(
                     height: (mediumContainerHeight / 100) * 20,
