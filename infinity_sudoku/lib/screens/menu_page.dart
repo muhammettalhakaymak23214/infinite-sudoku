@@ -24,7 +24,7 @@ class _MenuPageState extends State<MenuPage> {
     final double cizgiuzunlugu = circuluarWidth / 3;
 
     return Scaffold(
-      backgroundColor: Colors.pink,
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       body: Container(
         child: Column(
           children: [
@@ -32,15 +32,20 @@ class _MenuPageState extends State<MenuPage> {
               height: topSizeBoxHeight,
             ),
             Container(
+              alignment: Alignment.centerRight,
               height: topContainerHeight,
-              color: Colors.green,
+              //color: Colors.green,
+              child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.palette),
+                  color: Colors.white),
             ),
             SizedBox(
               height: mediumSizeBoxHeight,
             ),
             Container(
               height: mediumContainerHeight,
-              color: Colors.amber,
+              color: const Color.fromARGB(255, 0, 0, 0),
               child: Column(
                 children: [
                   Stack(
@@ -60,7 +65,7 @@ class _MenuPageState extends State<MenuPage> {
                             width: cizgikalinligi,
                             height: circuluarHeight / 2,
                             decoration: BoxDecoration(
-                                color: Colors.red,
+                                color: Colors.black,
                                 borderRadius: BorderRadius.circular(10)),
                           )),
                       Positioned(
@@ -70,7 +75,7 @@ class _MenuPageState extends State<MenuPage> {
                             width: cizgikalinligi,
                             height: circuluarHeight / 2,
                             decoration: BoxDecoration(
-                                color: Colors.red,
+                                color: Colors.black,
                                 borderRadius: BorderRadius.circular(10)),
                           )),
                       Positioned(
@@ -80,7 +85,7 @@ class _MenuPageState extends State<MenuPage> {
                             width: circuluarWidth / 2,
                             height: cizgikalinligi,
                             decoration: BoxDecoration(
-                                color: Colors.red,
+                                color: Colors.black,
                                 borderRadius: BorderRadius.circular(10)),
                           )),
                       Positioned(
@@ -90,34 +95,46 @@ class _MenuPageState extends State<MenuPage> {
                             width: circuluarWidth / 2,
                             height: cizgikalinligi,
                             decoration: BoxDecoration(
-                                color: Colors.red,
+                                color: Colors.black,
                                 borderRadius: BorderRadius.circular(10)),
                           )),
                     ],
                   ),
                   Container(
                     height: (mediumContainerHeight / 100) * 20,
-                    color: Colors.white,
+                    color: const Color.fromARGB(255, 0, 0, 0),
                     child: Row(
                       children: [
                         Container(
                           width: screenWidth / 4,
-                          color: const Color.fromARGB(255, 7, 255, 160),
+                          // color: const Color.fromARGB(255, 7, 255, 160),
+                          child: IconButton(
+                            icon:
+                                Icon(Icons.arrow_back_ios, color: Colors.white),
+                            onPressed: () {},
+                          ),
                         ),
                         Container(
                           alignment: Alignment.center,
                           height: (mediumContainerHeight / 100) * 15,
                           width: screenWidth / 2,
-                          color: const Color.fromARGB(255, 255, 1, 1),
+                          decoration: BoxDecoration(
+                              //color: const Color.fromARGB(255, 255, 1, 1),
+                              borderRadius: BorderRadius.circular(10)),
                           child: const Text(
                             "Kolay",
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 30),
+                            style: TextStyle(fontSize: 30, color: Colors.white),
                           ),
                         ),
                         Container(
                           width: screenWidth / 4,
-                          color: const Color.fromARGB(255, 7, 255, 160),
+                          // color: const Color.fromARGB(255, 7, 255, 160),
+                          child: IconButton(
+                            icon: Icon(Icons.arrow_forward_ios,
+                                color: Colors.white),
+                            onPressed: () {},
+                          ),
                         )
                       ],
                     ),
@@ -126,15 +143,15 @@ class _MenuPageState extends State<MenuPage> {
                     alignment: Alignment.center,
                     margin: EdgeInsets.all(10),
                     height: ((mediumContainerHeight / 100) * 20) - 20,
-                    width: (screenWidth / 3) * 2,
+                    width: (screenWidth / 7) * 6,
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 255, 1, 1),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
+                        // color: const Color.fromARGB(255, 255, 1, 1),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.white, width: 2)),
+                    child: const Text(
                       "Oyna",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 30),
+                      style: TextStyle(fontSize: 30, color: Colors.white),
                     ),
                   ),
                 ],
@@ -144,8 +161,38 @@ class _MenuPageState extends State<MenuPage> {
               height: bottomSizeBoxHeight,
             ),
             Container(
-              height: bottomContainerHeight,
-              color: Colors.blue,
+              margin: EdgeInsets.all(30),
+              height: bottomContainerHeight - 60,
+              /*
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+                  */
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.settings,
+                        size: 40,
+                        color: Colors.white,
+                      )),
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.menu,
+                        size: 40,
+                        color: Colors.white,
+                      )),
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.warning,
+                        size: 40,
+                        color: Colors.white,
+                      ))
+                ],
+              ),
             ),
             SizedBox(
               height: bottomSizeBoxHeight,
