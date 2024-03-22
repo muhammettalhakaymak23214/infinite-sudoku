@@ -18,6 +18,10 @@ class _MenuPageState extends State<MenuPage> {
     final double topContainerHeight = (screenHeight / 100) * 10;
     final double mediumContainerHeight = (screenHeight / 100) * 40;
     final double bottomContainerHeight = (screenHeight / 100) * 15;
+    final double circuluarHeight = (mediumContainerHeight / 100) * 60;
+    final double circuluarWidth = circuluarHeight;
+    final double cizgikalinligi = circuluarWidth / 20;
+    final double cizgiuzunlugu = circuluarWidth / 3;
 
     return Scaffold(
       backgroundColor: Colors.pink,
@@ -42,44 +46,52 @@ class _MenuPageState extends State<MenuPage> {
                   Stack(
                     children: [
                       Container(
-                        width: (mediumContainerHeight / 100) * 60,
-                        height: (mediumContainerHeight / 100) * 60,
+                        width: circuluarWidth,
+                        height: circuluarHeight,
                         //color: Colors.blue,
                         decoration: BoxDecoration(
                             color: Colors.blue,
                             borderRadius: BorderRadius.circular(200)),
                       ),
                       Positioned(
-                          left: 75,
-                          top: 50,
+                          left: circuluarWidth / 3,
+                          top: circuluarHeight / 4,
                           child: Container(
-                            width: 10,
-                            height: 100,
-                            color: Colors.red,
+                            width: cizgikalinligi,
+                            height: circuluarHeight / 2,
+                            decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(10)),
                           )),
                       Positioned(
-                          left: 125,
-                          top: 50,
+                          left: ((circuluarWidth / 3) * 2) - cizgikalinligi,
+                          top: circuluarHeight / 4,
                           child: Container(
-                            width: 10,
-                            height: 100,
-                            color: Colors.red,
+                            width: cizgikalinligi,
+                            height: circuluarHeight / 2,
+                            decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(10)),
                           )),
                       Positioned(
-                          left: 50,
-                          top: 75,
+                          left: circuluarWidth / 4,
+                          top: circuluarHeight / 3,
                           child: Container(
-                            width: 100,
-                            height: 10,
-                            color: Colors.red,
+                            width: circuluarWidth / 2,
+                            height: cizgikalinligi,
+                            decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(10)),
                           )),
                       Positioned(
-                          left: 50,
-                          top: 125,
+                          left: circuluarWidth / 4,
+                          top: ((circuluarHeight / 3) * 2) - cizgikalinligi,
                           child: Container(
-                            width: 100,
-                            height: 10,
-                            color: Colors.red,
+                            width: circuluarWidth / 2,
+                            height: cizgikalinligi,
+                            decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(10)),
                           )),
                     ],
                   ),
@@ -89,22 +101,41 @@ class _MenuPageState extends State<MenuPage> {
                     child: Row(
                       children: [
                         Container(
-                          width: 100,
+                          width: screenWidth / 4,
+                          color: const Color.fromARGB(255, 7, 255, 160),
                         ),
                         Container(
-                          height: (mediumContainerHeight / 100) * 20,
-                          width: 200,
-                          color: Colors.black,
+                          alignment: Alignment.center,
+                          height: (mediumContainerHeight / 100) * 15,
+                          width: screenWidth / 2,
+                          color: const Color.fromARGB(255, 255, 1, 1),
+                          child: const Text(
+                            "Kolay",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 30),
+                          ),
                         ),
                         Container(
-                          width: 100,
+                          width: screenWidth / 4,
+                          color: const Color.fromARGB(255, 7, 255, 160),
                         )
                       ],
                     ),
                   ),
                   Container(
-                    height: (mediumContainerHeight / 100) * 20,
-                    color: Colors.black,
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.all(10),
+                    height: ((mediumContainerHeight / 100) * 20) - 20,
+                    width: (screenWidth / 3) * 2,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 255, 1, 1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      "Oyna",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 30),
+                    ),
                   ),
                 ],
               ),
