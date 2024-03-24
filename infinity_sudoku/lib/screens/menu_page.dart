@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:infinity_sudoku/consts/colors.dart';
+import 'package:infinity_sudoku/screens/game_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuPage extends StatefulWidget {
@@ -34,7 +35,7 @@ class _MenuPageState extends State<MenuPage> {
         _secondaryColor = Color(colorValue2);
       });
     } else {
-      // Varsayılan olarak bir renk belirleyin (örneğin mavi)
+      //Varsayılan renkler
       _primaryColor = Colors.blue;
       _secondaryColor = Colors.blue;
     }
@@ -188,6 +189,11 @@ class _MenuPageState extends State<MenuPage> {
                       GestureDetector(
                         onTap: () {
                           oyunModuTercihi = oyunModu[i % 3];
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => GamePage(
+                                      oyunModuTercihi: oyunModuTercihi)));
                         },
                         child: Container(
                           alignment: Alignment.center,
