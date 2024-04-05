@@ -13,6 +13,8 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
+  int kordinatAyarRow = 404;
+  int kordinatAyarCol = 404;
   int kordinatRow = 404;
   int kordinatCol = 404;
   int kordinatColRenk = 404;
@@ -239,6 +241,107 @@ class _GamePageState extends State<GamePage> {
       0,
     ],
   ];
+  List<List<String>> ayarSudoku = [
+    [
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+    ],
+    [
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+    ],
+    [
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+    ],
+    [
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+    ],
+    [
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+    ],
+    [
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+    ],
+    [
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+    ],
+    [
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+    ],
+    [
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+      "z",
+    ],
+  ];
 
   @override
   void initState() {
@@ -325,7 +428,25 @@ class _GamePageState extends State<GamePage> {
     cevapSudoku[6] = cevap_row_7;
     cevapSudoku[7] = cevap_row_8;
     cevapSudoku[8] = cevap_row_9;
+    ayarSudokuOlustur();
     setState(() {});
+  }
+
+  void ayarSudokuOlustur() {
+    int sayac0 = 0;
+    while (sayac0 < 9) {
+      int sayac1 = 0;
+      while (sayac1 < 9) {
+        if (soruSudoku[sayac0][sayac1] == 0) {
+          ayarSudoku[sayac0][sayac1] = "B";
+        } else if (soruSudoku[sayac0][sayac1] != 0) {
+          ayarSudoku[sayac0][sayac1] = "X";
+        }
+        sayac1++;
+      }
+      sayac0++;
+    }
+    debugPrint(ayarSudoku[0].toString());
   }
 
   void sudokuCoz(int newValue) {
@@ -336,6 +457,11 @@ class _GamePageState extends State<GamePage> {
     } else {
       debugPrint("-----------------hata----------------");
     }
+  }
+
+  void ayarSudokuDuzenle(String deger) {
+    ayarSudoku[kordinatAyarRow][kordinatAyarCol] = deger;
+    setState(() {});
   }
 
   @override
@@ -370,14 +496,33 @@ class _GamePageState extends State<GamePage> {
                     }
                   }
 
+                  Color textColor = const Color.fromARGB(255, 255, 0, 0);
+                  if (ayarSudoku[row][col] == "B") {
+                    textColor = const Color.fromARGB(0, 255, 255, 255);
+                  } else if (ayarSudoku[row][col] == "X") {
+                    textColor = Color.fromARGB(255, 255, 0, 0);
+                  } else if (ayarSudoku[row][col] == "Y") {
+                    textColor = const Color.fromARGB(255, 0, 0, 0);
+                  }
+
                   return GestureDetector(
                     onTap: () {
                       print('Tıklanan hücre: $value  --- hucre: $row . $col');
-                      kordinatCol = col;
-                      kordinatRow = row;
-                      kordinatRowRenk = row;
-                      kordinatColRenk = col;
-                      setState(() {});
+                      if (ayarSudoku[row][col] == "B" ||
+                          ayarSudoku[row][col] == "Y") {
+                        kordinatCol = col;
+                        kordinatRow = row;
+                        kordinatRowRenk = row;
+                        kordinatColRenk = col;
+                        kordinatAyarCol = col;
+                        kordinatAyarRow = row;
+                        setState(() {});
+                      } else {
+                        kordinatCol = 404;
+                        kordinatRow = 404;
+
+                        debugPrint("hatatattataa");
+                      }
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -387,7 +532,7 @@ class _GamePageState extends State<GamePage> {
                       child: Center(
                         child: Text(
                           '$value',
-                          style: TextStyle(fontSize: 20.0),
+                          style: TextStyle(fontSize: 20.0, color: textColor),
                         ),
                       ),
                     ),
@@ -400,14 +545,23 @@ class _GamePageState extends State<GamePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(
-              9,
-              (index) => ElevatedButton(
-                onPressed: () {
-                  // Butona tıklama işlemleri buraya yazılabilir
-                  sudokuCoz(index + 1);
-                  setState(() {});
-                },
-                child: Text('${index + 1}'),
+              10,
+              (index) => Container(
+                height: 30,
+                width: 30,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Butona tıklama işlemleri buraya yazılabilir
+                    sudokuCoz(index);
+                    if (index != 0) {
+                      ayarSudokuDuzenle("Y");
+                    } else {
+                      ayarSudokuDuzenle("B");
+                    }
+                    setState(() {});
+                  },
+                  child: Text('${index}'),
+                ),
               ),
             ),
           ),
