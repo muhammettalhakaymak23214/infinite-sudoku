@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:infinity_sudoku/consts/my_container.dart';
 
 class GamePage extends StatefulWidget {
   final String oyunModuTercihi;
@@ -592,65 +593,30 @@ class _GamePageState extends State<GamePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(
-                        onTap: () => sayilaraBasildi(1),
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(200)),
-                          child: const Text("1", textAlign: TextAlign.center),
-                        ),
-                      ),
+                          onTap: () => sayilaraBasildi(1),
+                          child: const MyContainer(
+                            text: "1",
+                          )),
                       GestureDetector(
-                        onTap: () => sayilaraBasildi(2),
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(200)),
-                          child: const Text("2", textAlign: TextAlign.center),
-                        ),
-                      ),
+                          onTap: () => sayilaraBasildi(2),
+                          child: const MyContainer(
+                            text: "2",
+                          )),
                       GestureDetector(
-                        onTap: () => sayilaraBasildi(3),
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(200)),
-                          child: const Text("3", textAlign: TextAlign.center),
-                        ),
-                      ),
+                          onTap: () => sayilaraBasildi(3),
+                          child: const MyContainer(
+                            text: "3",
+                          )),
                       GestureDetector(
-                        onTap: () => sayilaraBasildi(4),
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(200)),
-                          child: const Text("4", textAlign: TextAlign.center),
-                        ),
-                      ),
+                          onTap: () => sayilaraBasildi(4),
+                          child: const MyContainer(
+                            text: "4",
+                          )),
                       GestureDetector(
-                        onTap: () => sayilaraBasildi(5),
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(200)),
-                          child: const Text("5", textAlign: TextAlign.center),
-                        ),
-                      ),
+                          onTap: () => sayilaraBasildi(5),
+                          child: const MyContainer(
+                            text: "5",
+                          )),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -658,60 +624,25 @@ class _GamePageState extends State<GamePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(
-                        onTap: () => sayilaraBasildi(6),
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(200)),
-                          child: const Text("6", textAlign: TextAlign.center),
-                        ),
-                      ),
+                          onTap: () => sayilaraBasildi(6),
+                          child: const MyContainer(
+                            text: "6",
+                          )),
                       GestureDetector(
-                        onTap: () => sayilaraBasildi(7),
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(200)),
-                          child: const Text("7", textAlign: TextAlign.center),
-                        ),
-                      ),
+                          onTap: () => sayilaraBasildi(7),
+                          child: const MyContainer(
+                            text: "7",
+                          )),
                       GestureDetector(
-                        onTap: () => sayilaraBasildi(8),
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(200)),
-                          child: const Text("8", textAlign: TextAlign.center),
-                        ),
-                      ),
+                          onTap: () => sayilaraBasildi(8),
+                          child: const MyContainer(
+                            text: "8",
+                          )),
                       GestureDetector(
-                        onTap: () => sayilaraBasildi(9),
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 255, 255, 255),
-                              borderRadius: BorderRadius.circular(200),
-                              border: Border.all(
-                                  color: Color.fromARGB(9, 19, 19, 19),
-                                  width: 5)),
-                          child: const Text(
-                            "9",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 30),
-                          ),
-                        ),
-                      ),
+                          onTap: () => sayilaraBasildi(9),
+                          child: const MyContainer(
+                            text: "9",
+                          )),
                       GestureDetector(
                         onTap: () {
                           sudokuCoz(0);
