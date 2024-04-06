@@ -8,8 +8,13 @@ import 'package:infinity_sudoku/consts/my_container_icon.dart';
 
 class GamePage extends StatefulWidget {
   final String oyunModuTercihi;
+  final Color birincilRenk;
+  final Color ikincilRenk;
 
-  GamePage({required this.oyunModuTercihi});
+  GamePage(
+      {required this.oyunModuTercihi,
+      required this.birincilRenk,
+      required this.ikincilRenk});
 
   @override
   State<GamePage> createState() => _GamePageState();
@@ -116,7 +121,7 @@ class _GamePageState extends State<GamePage> {
   void sayilaraBasildi(int sayi) {
     sudokuCoz(sayi);
     ayarSudokuDuzenle("Y");
-    setState(() {});
+    //setState(() {});
   }
 
   void ayarSudokuOlustur() {
@@ -154,7 +159,7 @@ class _GamePageState extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+      backgroundColor: Color.fromARGB(255, 0, 0, 0),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -167,11 +172,16 @@ class _GamePageState extends State<GamePage> {
                 margin: const EdgeInsetsDirectional.only(top: 50),
 
                 decoration: BoxDecoration(
-                    color: Colors.amber,
-                    borderRadius: BorderRadius.circular(20)),
-                child: const Text(
-                  "20.15",
-                  style: TextStyle(fontSize: 20),
+                    color: widget.ikincilRenk,
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(
+                        color: Color.fromARGB(255, 255, 255, 255), width: 2.5)),
+                child: Text(
+                  "20:15",
+                  style: TextStyle(
+                      fontSize: 40,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w900),
                   textAlign: TextAlign.center,
                 ),
               )),
@@ -191,26 +201,30 @@ class _GamePageState extends State<GamePage> {
 
                   // Satır ve sütun indekslerine göre arka plan rengini belirle
                   Color backgroundColor = Colors.white;
+                  Color kenarlikRengi = Colors.white;
                   if ((row ~/ 3 + col ~/ 3) % 2 == 0) {
-                    backgroundColor = Colors.amber;
+                    backgroundColor = widget.birincilRenk;
                     if ((row == kordinatRowRenk) && (col == kordinatColRenk)) {
                       backgroundColor = Color.fromARGB(255, 0, 34, 251);
+                      kenarlikRengi = Colors.white;
                     }
                   } else {
-                    backgroundColor = Colors.white;
+                    backgroundColor = widget.ikincilRenk;
                     if ((row == kordinatRowRenk) && (col == kordinatColRenk)) {
                       backgroundColor = Color.fromARGB(255, 0, 34, 251);
+                      kenarlikRengi = Colors.white;
                     }
                   }
                   if (secilenValue == value && value != 0) {
-                    backgroundColor = Color.fromARGB(255, 71, 251, 0);
+                    //backgroundColor = Color.fromARGB(255, 71, 251, 0);
+                    kenarlikRengi = Color.fromARGB(255, 255, 0, 0);
                   }
 
-                  Color textColor = const Color.fromARGB(255, 255, 0, 0);
+                  Color textColor = Color.fromARGB(255, 255, 255, 255);
                   if (ayarSudoku[row][col] == "B") {
                     textColor = const Color.fromARGB(0, 255, 255, 255);
                   } else if (ayarSudoku[row][col] == "X") {
-                    textColor = Color.fromARGB(255, 255, 0, 0);
+                    textColor = Color.fromARGB(255, 255, 255, 255);
                   } else if (ayarSudoku[row][col] == "Y") {
                     textColor = const Color.fromARGB(255, 0, 0, 0);
                   }
@@ -240,15 +254,20 @@ class _GamePageState extends State<GamePage> {
                       setState(() {});
                     },
                     child: Container(
-                      margin: EdgeInsets.all(0),
+                      margin: EdgeInsets.all(2.0),
                       decoration: BoxDecoration(
-                        color: backgroundColor,
-                        border: Border.all(),
-                      ),
+                          color: backgroundColor,
+                          border: Border.all(color: kenarlikRengi, width: 2.5),
+                          borderRadius: BorderRadius.circular(5)),
                       child: Center(
                         child: Text(
                           '$value',
-                          style: TextStyle(fontSize: 20.0, color: textColor),
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            color: textColor,
+                            fontWeight: FontWeight.w900,
+                            fontStyle: FontStyle.normal,
+                          ),
                         ),
                       ),
                     ),
@@ -261,64 +280,37 @@ class _GamePageState extends State<GamePage> {
           Expanded(
             flex: 5,
             child: Container(
-              margin: EdgeInsets.only(top: 20, left: 20, right: 20),
-              //color: Colors.amber,
+              margin: EdgeInsets.only(top: 0, left: 10, right: 10),
+              decoration: BoxDecoration(
+                  color: widget.ikincilRenk,
+                  border: Border.all(color: Colors.white, width: 2.5),
+                  borderRadius: BorderRadius.circular(5)),
               child: Column(
                 children: [
-                  //const SizedBox(height: 20),
+                  const SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(
                           onTap: () => sayilaraBasildi(1),
-                          child: const MyContainer(
+                          child: MyContainer(
                             text: "1",
-                          )),
-                      GestureDetector(
-                          onTap: () => sayilaraBasildi(2),
-                          child: const MyContainer(
-                            text: "2",
-                          )),
-                      GestureDetector(
-                          onTap: () => sayilaraBasildi(3),
-                          child: const MyContainer(
-                            text: "3",
+                            renk1: widget.birincilRenk,
+                            renk2: Colors.black,
                           )),
                       GestureDetector(
                           onTap: () => sayilaraBasildi(4),
-                          child: const MyContainer(
+                          child: MyContainer(
                             text: "4",
-                          )),
-                      GestureDetector(
-                          onTap: () => sayilaraBasildi(5),
-                          child: const MyContainer(
-                            text: "5",
-                          )),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      GestureDetector(
-                          onTap: () => sayilaraBasildi(6),
-                          child: const MyContainer(
-                            text: "6",
+                            renk1: widget.birincilRenk,
+                            renk2: Colors.black,
                           )),
                       GestureDetector(
                           onTap: () => sayilaraBasildi(7),
-                          child: const MyContainer(
+                          child: MyContainer(
                             text: "7",
-                          )),
-                      GestureDetector(
-                          onTap: () => sayilaraBasildi(8),
-                          child: const MyContainer(
-                            text: "8",
-                          )),
-                      GestureDetector(
-                          onTap: () => sayilaraBasildi(9),
-                          child: const MyContainer(
-                            text: "9",
+                            renk1: widget.birincilRenk,
+                            renk2: Colors.black,
                           )),
                       GestureDetector(
                         onTap: () {
@@ -326,7 +318,48 @@ class _GamePageState extends State<GamePage> {
                           ayarSudokuDuzenle("B");
                           setState(() {});
                         },
-                        child: MyContainerIcon(),
+                        child: MyContainerIcon(
+                          simge: Icons.clear,
+                          renk1: widget.birincilRenk,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                          onTap: () => sayilaraBasildi(2),
+                          child: MyContainer(
+                            text: "2",
+                            renk1: widget.birincilRenk,
+                            renk2: Colors.black,
+                          )),
+                      GestureDetector(
+                          onTap: () => sayilaraBasildi(5),
+                          child: MyContainer(
+                            text: "5",
+                            renk1: widget.birincilRenk,
+                            renk2: Colors.black,
+                          )),
+                      GestureDetector(
+                          onTap: () => sayilaraBasildi(8),
+                          child: MyContainer(
+                            text: "8",
+                            renk1: widget.birincilRenk,
+                            renk2: Colors.black,
+                          )),
+                      GestureDetector(
+                        onTap: () {
+                          sudokuCoz(0);
+                          ayarSudokuDuzenle("B");
+                          setState(() {});
+                        },
+                        child: MyContainerIcon(
+                          simge: Icons.edit,
+                          renk1: widget.birincilRenk,
+                        ),
                       ),
                     ],
                   ),
@@ -337,67 +370,35 @@ class _GamePageState extends State<GamePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          sudokuCoz(0);
-                          ayarSudokuDuzenle("B");
-                          setState(() {});
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(200)),
-                          child: Icon(Icons.clear),
-                        ),
-                      ),
+                          onTap: () => sayilaraBasildi(3),
+                          child: MyContainer(
+                            text: "3",
+                            renk1: widget.birincilRenk,
+                            renk2: Colors.black,
+                          )),
+                      GestureDetector(
+                          onTap: () => sayilaraBasildi(6),
+                          child: MyContainer(
+                            text: "6",
+                            renk1: widget.birincilRenk,
+                            renk2: Colors.black,
+                          )),
+                      GestureDetector(
+                          onTap: () => sayilaraBasildi(9),
+                          child: MyContainer(
+                            text: "9",
+                            renk1: widget.birincilRenk,
+                            renk2: Colors.black,
+                          )),
                       GestureDetector(
                         onTap: () {
                           sudokuCoz(0);
                           ayarSudokuDuzenle("B");
                           setState(() {});
                         },
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(200)),
-                          child: Icon(Icons.clear),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          sudokuCoz(0);
-                          ayarSudokuDuzenle("B");
-                          setState(() {});
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(200)),
-                          child: Icon(Icons.clear),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          sudokuCoz(0);
-                          ayarSudokuDuzenle("B");
-                          setState(() {});
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(200)),
-                          child: Icon(Icons.clear),
+                        child: MyContainerIcon(
+                          simge: Icons.restart_alt_rounded,
+                          renk1: widget.birincilRenk,
                         ),
                       ),
                     ],

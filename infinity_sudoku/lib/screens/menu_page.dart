@@ -193,7 +193,10 @@ class _MenuPageState extends State<MenuPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => GamePage(
-                                      oyunModuTercihi: oyunModuTercihi)));
+                                        oyunModuTercihi: oyunModuTercihi,
+                                        birincilRenk: _primaryColor,
+                                        ikincilRenk: _secondaryColor,
+                                      )));
                         },
                         child: Container(
                           alignment: Alignment.center,
