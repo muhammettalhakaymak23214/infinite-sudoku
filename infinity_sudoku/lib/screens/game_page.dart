@@ -13,6 +13,7 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
+  int secilenValue = 404;
   int kordinatAyarRow = 404;
   int kordinatAyarCol = 404;
   int kordinatRow = 404;
@@ -432,6 +433,12 @@ class _GamePageState extends State<GamePage> {
     setState(() {});
   }
 
+  void sayilaraBasildi(int sayi) {
+    sudokuCoz(sayi);
+    ayarSudokuDuzenle("Y");
+    setState(() {});
+  }
+
   void ayarSudokuOlustur() {
     int sayac0 = 0;
     while (sayac0 < 9) {
@@ -467,14 +474,34 @@ class _GamePageState extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Expanded(
+              flex: 2,
+              child: Container(
+                // height: 50,
+                alignment: Alignment.center,
+                width: 200,
+                margin: const EdgeInsetsDirectional.only(top: 50),
+
+                decoration: BoxDecoration(
+                    color: Colors.amber,
+                    borderRadius: BorderRadius.circular(20)),
+                child: const Text(
+                  "20.15",
+                  style: TextStyle(fontSize: 20),
+                  textAlign: TextAlign.center,
+                ),
+              )),
+          Expanded(
+            flex: 8,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 8, right: 8),
               child: GridView.builder(
                 itemCount: 81,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 9,
                 ),
                 itemBuilder: (BuildContext context, int index) {
@@ -494,6 +521,9 @@ class _GamePageState extends State<GamePage> {
                     if ((row == kordinatRowRenk) && (col == kordinatColRenk)) {
                       backgroundColor = Color.fromARGB(255, 0, 34, 251);
                     }
+                  }
+                  if (secilenValue == value && value != 0) {
+                    backgroundColor = Color.fromARGB(255, 71, 251, 0);
                   }
 
                   Color textColor = const Color.fromARGB(255, 255, 0, 0);
@@ -523,8 +553,14 @@ class _GamePageState extends State<GamePage> {
 
                         debugPrint("hatatattataa");
                       }
+                      if (value != 0) {
+                        secilenValue = value;
+                      }
+                      secilenValue = value;
+                      setState(() {});
                     },
                     child: Container(
+                      margin: EdgeInsets.all(0),
                       decoration: BoxDecoration(
                         color: backgroundColor,
                         border: Border.all(),
@@ -541,8 +577,249 @@ class _GamePageState extends State<GamePage> {
               ),
             ),
           ),
-          const SizedBox(height: 20),
-          Row(
+          //----------------------------------------
+          //const SizedBox(height: 20),
+          //----------------------------------------
+          Expanded(
+            flex: 5,
+            child: Container(
+              margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+              //color: Colors.amber,
+              child: Column(
+                children: [
+                  //const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () => sayilaraBasildi(1),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(200)),
+                          child: const Text("1", textAlign: TextAlign.center),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => sayilaraBasildi(2),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(200)),
+                          child: const Text("2", textAlign: TextAlign.center),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => sayilaraBasildi(3),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(200)),
+                          child: const Text("3", textAlign: TextAlign.center),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => sayilaraBasildi(4),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(200)),
+                          child: const Text("4", textAlign: TextAlign.center),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => sayilaraBasildi(5),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(200)),
+                          child: const Text("5", textAlign: TextAlign.center),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () => sayilaraBasildi(6),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(200)),
+                          child: const Text("6", textAlign: TextAlign.center),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => sayilaraBasildi(7),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(200)),
+                          child: const Text("7", textAlign: TextAlign.center),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => sayilaraBasildi(8),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(200)),
+                          child: const Text("8", textAlign: TextAlign.center),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => sayilaraBasildi(9),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 255, 255, 255),
+                              borderRadius: BorderRadius.circular(200),
+                              border: Border.all(
+                                  color: Color.fromARGB(9, 19, 19, 19),
+                                  width: 5)),
+                          child: const Text(
+                            "9",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 30),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          sudokuCoz(0);
+                          ayarSudokuDuzenle("B");
+                          setState(() {});
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(200)),
+                          child: Icon(Icons.clear),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          sudokuCoz(0);
+                          ayarSudokuDuzenle("B");
+                          setState(() {});
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(200)),
+                          child: Icon(Icons.clear),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          sudokuCoz(0);
+                          ayarSudokuDuzenle("B");
+                          setState(() {});
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(200)),
+                          child: Icon(Icons.clear),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          sudokuCoz(0);
+                          ayarSudokuDuzenle("B");
+                          setState(() {});
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(200)),
+                          child: Icon(Icons.clear),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          sudokuCoz(0);
+                          ayarSudokuDuzenle("B");
+                          setState(() {});
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(200)),
+                          child: Icon(Icons.clear),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          //****************************************************************************************************** */
+
+          // const SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+/*
+ Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(
               10,
@@ -565,8 +842,10 @@ class _GamePageState extends State<GamePage> {
               ),
             ),
           ),
-          const SizedBox(height: 20),
-          ElevatedButton(
+const SizedBox(height: 20),
+
+
+           ElevatedButton(
               onPressed: () {
                 int omeygat = 0;
                 int sayac = 0;
@@ -589,9 +868,6 @@ class _GamePageState extends State<GamePage> {
                 }
               },
               child: Text("Hesapla")),
-          const SizedBox(height: 20),
-        ],
-      ),
-    );
-  }
-}
+
+
+*/
