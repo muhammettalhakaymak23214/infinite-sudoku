@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:infinity_sudoku/consts/my_container.dart';
+import 'package:infinity_sudoku/consts/my_container_icon.dart';
 
 class GamePage extends StatefulWidget {
   final String oyunModuTercihi;
@@ -649,15 +650,7 @@ class _GamePageState extends State<GamePage> {
                           ayarSudokuDuzenle("B");
                           setState(() {});
                         },
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(200)),
-                          child: Icon(Icons.clear),
-                        ),
+                        child: MyContainerIcon(),
                       ),
                     ],
                   ),
