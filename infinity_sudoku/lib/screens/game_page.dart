@@ -1,10 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
-
+import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:infinity_sudoku/consts/listeler.dart';
 import 'package:infinity_sudoku/consts/my_container.dart';
 import 'package:infinity_sudoku/consts/my_container_icon.dart';
+import 'package:infinity_sudoku/screens/menu_page.dart';
 
 class GamePage extends StatefulWidget {
   final String oyunModuTercihi;
@@ -20,7 +22,7 @@ class GamePage extends StatefulWidget {
   State<GamePage> createState() => _GamePageState();
 }
 
-class _GamePageState extends State<GamePage> {
+class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
   int secilenValue = 404;
   int kordinatAyarRow = 404;
   int kordinatAyarCol = 404;
@@ -28,11 +30,30 @@ class _GamePageState extends State<GamePage> {
   int kordinatCol = 404;
   int kordinatColRenk = 404;
   int kordinatRowRenk = 404;
-
+  late AnimationController _controller;
+  late Animation<double> _animation;
   @override
   void initState() {
     super.initState();
     fetchData();
+    _startTimer();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    );
+    _animation = Tween<double>(
+      begin: -30.0,
+      end: 30.0,
+    ).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    )..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _controller.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          _controller.forward();
+        }
+      });
+    _controller.forward();
   }
 
   Future<void> fetchData() async {
@@ -156,6 +177,118 @@ class _GamePageState extends State<GamePage> {
     setState(() {});
   }
 
+  bool _isTimerRunning = false;
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_seconds < 59) {
+          _seconds++;
+        } else {
+          _seconds = 0;
+          _minutes++;
+        }
+      });
+    });
+    _isTimerRunning = true;
+  }
+
+  int _minutes = 0;
+  int _seconds = 0;
+  late Timer _timer;
+  @override
+  void dispose() {
+    if (_isTimerRunning) {
+      _timer.cancel();
+    }
+    super.dispose();
+  }
+
+  void _stopTimer() {
+    _timer.cancel();
+    _isTimerRunning = false;
+  }
+
+  @override
+  Future<void> _showAlertDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.black.withOpacity(0.97),
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            side: BorderSide(color: widget.ikincilRenk, width: 2.0),
+          ),
+          backgroundColor: widget.birincilRenk,
+          title: Text(
+            'Oyun Durdu',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: widget.ikincilRenk),
+          ),
+          content: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Icon(
+                  Icons.timer_off,
+                  size: 50,
+                  color: widget.ikincilRenk,
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Başlatmak için devam edebilirsiniz.',
+                  style: TextStyle(color: widget.ikincilRenk),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            AnimatedBuilder(
+              animation: _animation,
+              builder: (context, child) {
+                return Transform.translate(
+                  offset: Offset(_animation.value, 0.0),
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        _startTimer();
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          color: widget.ikincilRenk,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.white, width: 2.5),
+                        ),
+                        child: Icon(
+                          Icons.play_arrow,
+                          size: 40,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /*
+  TextButton(
+              child: Text('Tamam'),
+              onPressed: () {
+                _startTimer();
+                Navigator.of(context).pop();
+              },
+            ), */
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,25 +298,75 @@ class _GamePageState extends State<GamePage> {
         children: [
           Expanded(
               flex: 2,
-              child: Container(
-                // height: 50,
-                alignment: Alignment.center,
-                width: 200,
-                margin: const EdgeInsetsDirectional.only(top: 50),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => MenuPage()));
+                    },
+                    child: Container(
+                        // height: 50,
+                        alignment: Alignment.center,
+                        height: 50,
+                        width: 50,
+                        margin: const EdgeInsetsDirectional.only(top: 50),
+                        decoration: BoxDecoration(
+                            color: widget.ikincilRenk,
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                width: 2.5)),
+                        child: const Icon(
+                          Icons.arrow_back,
+                          size: 40,
+                        )),
+                  ),
+                  Container(
+                    // height: 50,
+                    alignment: Alignment.center,
+                    width: 200,
+                    margin: const EdgeInsetsDirectional.only(top: 50),
 
-                decoration: BoxDecoration(
-                    color: widget.ikincilRenk,
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(
-                        color: Color.fromARGB(255, 255, 255, 255), width: 2.5)),
-                child: Text(
-                  "20:15",
-                  style: TextStyle(
-                      fontSize: 40,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w900),
-                  textAlign: TextAlign.center,
-                ),
+                    decoration: BoxDecoration(
+                        color: widget.ikincilRenk,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            width: 2.5)),
+                    child: Text(
+                      "$_minutes:${_seconds < 10 ? '0$_seconds' : _seconds}",
+                      style: TextStyle(
+                          fontSize: 40,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w900),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      _stopTimer();
+                      _showAlertDialog(context);
+                    },
+                    child: Container(
+                        // height: 50,
+                        alignment: Alignment.center,
+                        height: 50,
+                        width: 50,
+                        margin: const EdgeInsetsDirectional.only(top: 50),
+                        decoration: BoxDecoration(
+                            color: widget.ikincilRenk,
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                width: 2.5)),
+                        child: Icon(
+                          Icons.pause,
+                          size: 40,
+                        )),
+                  ),
+                ],
               )),
           Expanded(
             flex: 8,
