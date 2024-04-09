@@ -321,3 +321,6 @@ List<List<String>> ayarSudoku = [
     "z",
   ],
 ];
+
+// ?--------
+List<List<int>> ipucuListesi = [];

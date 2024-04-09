@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -143,6 +144,36 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
     sudokuCoz(sayi);
     ayarSudokuDuzenle("Y");
     //setState(() {});
+  }
+
+  void ipucuGetir() {
+    int sayac = 0;
+    while (sayac < 9) {
+      int sayac2 = 0;
+      while (sayac2 < 9) {
+        if (ayarSudoku[sayac][sayac2] == "B") {
+          //cevapSudoku[sayac][sayac2] =
+          ipucuListesi.add([sayac, sayac2]);
+        }
+        sayac2++;
+      }
+      sayac++;
+    }
+    debugPrint(ipucuListesi.toString());
+    var random = Random();
+    int randomNumber = random
+        .nextInt(101); // 0 ile 100 arasında rastgele bir tamsayı elde eder
+    var rastgeleindex = (randomNumber % ipucuListesi.length);
+    if (rastgeleindex != 0) {
+      rastgeleindex--;
+    }
+    print("$rastgeleindex :=> ${ipucuListesi[rastgeleindex].toString()}");
+    soruSudoku[ipucuListesi[rastgeleindex][0]][ipucuListesi[rastgeleindex][1]] =
+        cevapSudoku[ipucuListesi[rastgeleindex][0]]
+            [ipucuListesi[rastgeleindex][1]];
+    ayarSudoku[ipucuListesi[rastgeleindex][0]][ipucuListesi[rastgeleindex][1]] =
+        "i";
+    ipucuListesi.clear();
   }
 
   void ayarSudokuOlustur() {
@@ -381,7 +412,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                   final row = index ~/ 9;
                   final col = index % 9;
                   final value = soruSudoku[row][col];
-
+                  FontStyle fontTarzi = FontStyle.normal;
                   // Satır ve sütun indekslerine göre arka plan rengini belirle
                   Color backgroundColor = Colors.white;
                   Color kenarlikRengi = Colors.white;
@@ -403,13 +434,19 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                     kenarlikRengi = Color.fromARGB(255, 255, 0, 0);
                   }
 
-                  Color textColor = Color.fromARGB(255, 255, 255, 255);
+                  Color textColor = Color.fromARGB(255, 217, 255, 0);
                   if (ayarSudoku[row][col] == "B") {
+                    fontTarzi = FontStyle.normal;
                     textColor = const Color.fromARGB(0, 255, 255, 255);
                   } else if (ayarSudoku[row][col] == "X") {
-                    textColor = Color.fromARGB(255, 255, 255, 255);
+                    fontTarzi = FontStyle.italic;
+                    textColor = Color.fromARGB(255, 217, 255, 0);
                   } else if (ayarSudoku[row][col] == "Y") {
+                    fontTarzi = FontStyle.normal;
                     textColor = const Color.fromARGB(255, 0, 0, 0);
+                  } else if (ayarSudoku[row][col] == "i") {
+                    textColor = Color.fromARGB(255, 217, 255, 0);
+                    fontTarzi = FontStyle.italic;
                   }
 
                   return GestureDetector(
@@ -449,7 +486,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                             fontSize: 25.0,
                             color: textColor,
                             fontWeight: FontWeight.w900,
-                            fontStyle: FontStyle.normal,
+                            fontStyle: fontTarzi,
                           ),
                         ),
                       ),
@@ -535,12 +572,11 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                           )),
                       GestureDetector(
                         onTap: () {
-                          sudokuCoz(0);
-                          ayarSudokuDuzenle("B");
+                          ipucuGetir();
                           setState(() {});
                         },
                         child: MyContainerIcon(
-                          simge: Icons.edit,
+                          simge: Icons.lightbulb_rounded,
                           renk1: widget.birincilRenk,
                         ),
                       ),
@@ -596,8 +632,6 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
     );
   }
 }
-
-
 
 /*
  Row(

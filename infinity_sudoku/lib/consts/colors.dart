@@ -10,8 +10,8 @@ var colorSecondary1 = const Color.fromARGB(255, 255, 17, 0);
 var colorPrimary2 = const Color.fromARGB(250, 0, 85, 255);
 var colorSecondary2 = const Color.fromARGB(255, 233, 254, 0);
 
-var colorPrimary3 = const Color.fromARGB(249, 255, 0, 208);
-var colorSecondary3 = const Color.fromARGB(255, 0, 254, 63);
+var colorPrimary3 = Color.fromARGB(248, 171, 119, 161);
+var colorSecondary3 = Color.fromARGB(255, 93, 148, 107);
 
 var colorPrimary4 = const Color.fromARGB(249, 0, 0, 0);
 var colorSecondary4 = const Color.fromARGB(255, 255, 255, 255);
