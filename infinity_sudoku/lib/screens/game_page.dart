@@ -144,6 +144,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
     sudokuCoz(sayi);
     ayarSudokuDuzenle("Y");
     //setState(() {});
+    hesapla();
   }
 
   void ipucuGetir() {
@@ -174,6 +175,28 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
     ayarSudoku[ipucuListesi[rastgeleindex][0]][ipucuListesi[rastgeleindex][1]] =
         "i";
     ipucuListesi.clear();
+    hesapla();
+  }
+
+  void hesapla() {
+    int omeygat = 0;
+    int sayac = 0;
+    while (sayac < 9) {
+      int sayac2 = 0;
+      while (sayac2 < 9) {
+        if (soruSudoku[sayac][sayac2] == cevapSudoku[sayac][sayac2]) {
+        } else {
+          omeygat = 1;
+        }
+        sayac2++;
+      }
+      sayac++;
+    }
+    if (omeygat == 0) {
+      debugPrint("basariliiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+    } else {
+      debugPrint("fdsdddddddddddddddddddddddddddddddd");
+    }
   }
 
   void ayarSudokuOlustur() {
@@ -246,66 +269,69 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
       barrierDismissible: false,
       barrierColor: Colors.black.withOpacity(0.97),
       builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0),
-            side: BorderSide(color: widget.ikincilRenk, width: 2.0),
-          ),
-          backgroundColor: widget.birincilRenk,
-          title: Text(
-            'Oyun Durdu',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: widget.ikincilRenk),
-          ),
-          content: Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Icon(
-                  Icons.timer_off,
-                  size: 50,
-                  color: widget.ikincilRenk,
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Başlatmak için devam edebilirsiniz.',
-                  style: TextStyle(color: widget.ikincilRenk),
-                ),
-              ],
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0),
+              side: BorderSide(color: widget.ikincilRenk, width: 2.0),
             ),
-          ),
-          actions: <Widget>[
-            AnimatedBuilder(
-              animation: _animation,
-              builder: (context, child) {
-                return Transform.translate(
-                  offset: Offset(_animation.value, 0.0),
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        _startTimer();
-                        Navigator.of(context).pop();
-                      },
-                      child: Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          color: widget.ikincilRenk,
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(color: Colors.white, width: 2.5),
-                        ),
-                        child: Icon(
-                          Icons.play_arrow,
-                          size: 40,
-                          color: Colors.white,
+            backgroundColor: widget.birincilRenk,
+            title: Text(
+              'Oyun Durdu',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: widget.ikincilRenk),
+            ),
+            content: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(
+                    Icons.timer_off,
+                    size: 50,
+                    color: widget.ikincilRenk,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Başlatmak için devam edebilirsiniz.',
+                    style: TextStyle(color: widget.ikincilRenk),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              AnimatedBuilder(
+                animation: _animation,
+                builder: (context, child) {
+                  return Transform.translate(
+                    offset: Offset(_animation.value, 0.0),
+                    child: Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          _startTimer();
+                          Navigator.of(context).pop();
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: widget.ikincilRenk,
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: Colors.white, width: 2.5),
+                          ),
+                          child: Icon(
+                            Icons.play_arrow,
+                            size: 40,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
-          ],
+                  );
+                },
+              ),
+            ],
+          ),
         );
       },
     );
@@ -352,6 +378,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                         child: const Icon(
                           Icons.arrow_back,
                           size: 40,
+                          color: Color.fromARGB(255, 255, 255, 255),
                         )),
                   ),
                   Container(
@@ -370,7 +397,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                       "$_minutes:${_seconds < 10 ? '0$_seconds' : _seconds}",
                       style: TextStyle(
                           fontSize: 40,
-                          color: Colors.black,
+                          color: Color.fromARGB(255, 255, 255, 255),
                           fontWeight: FontWeight.w900),
                       textAlign: TextAlign.center,
                     ),
@@ -395,6 +422,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                         child: Icon(
                           Icons.pause,
                           size: 40,
+                          color: const Color.fromARGB(255, 255, 255, 255),
                         )),
                   ),
                 ],
@@ -443,7 +471,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                     textColor = Color.fromARGB(255, 217, 255, 0);
                   } else if (ayarSudoku[row][col] == "Y") {
                     fontTarzi = FontStyle.normal;
-                    textColor = const Color.fromARGB(255, 0, 0, 0);
+                    textColor = Color.fromARGB(255, 255, 255, 255);
                   } else if (ayarSudoku[row][col] == "i") {
                     textColor = Color.fromARGB(255, 217, 255, 0);
                     fontTarzi = FontStyle.italic;
@@ -516,21 +544,21 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                           child: MyContainer(
                             text: "1",
                             renk1: widget.birincilRenk,
-                            renk2: Colors.black,
+                            renk2: const Color.fromARGB(255, 255, 255, 255),
                           )),
                       GestureDetector(
                           onTap: () => sayilaraBasildi(4),
                           child: MyContainer(
                             text: "4",
                             renk1: widget.birincilRenk,
-                            renk2: Colors.black,
+                            renk2: const Color.fromARGB(255, 255, 255, 255),
                           )),
                       GestureDetector(
                           onTap: () => sayilaraBasildi(7),
                           child: MyContainer(
                             text: "7",
                             renk1: widget.birincilRenk,
-                            renk2: Colors.black,
+                            renk2: const Color.fromARGB(255, 255, 255, 255),
                           )),
                       GestureDetector(
                         onTap: () {
@@ -554,21 +582,21 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                           child: MyContainer(
                             text: "2",
                             renk1: widget.birincilRenk,
-                            renk2: Colors.black,
+                            renk2: const Color.fromARGB(255, 255, 255, 255),
                           )),
                       GestureDetector(
                           onTap: () => sayilaraBasildi(5),
                           child: MyContainer(
                             text: "5",
                             renk1: widget.birincilRenk,
-                            renk2: Colors.black,
+                            renk2: const Color.fromARGB(255, 255, 255, 255),
                           )),
                       GestureDetector(
                           onTap: () => sayilaraBasildi(8),
                           child: MyContainer(
                             text: "8",
                             renk1: widget.birincilRenk,
-                            renk2: Colors.black,
+                            renk2: const Color.fromARGB(255, 255, 255, 255),
                           )),
                       GestureDetector(
                         onTap: () {
@@ -593,21 +621,21 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                           child: MyContainer(
                             text: "3",
                             renk1: widget.birincilRenk,
-                            renk2: Colors.black,
+                            renk2: const Color.fromARGB(255, 255, 255, 255),
                           )),
                       GestureDetector(
                           onTap: () => sayilaraBasildi(6),
                           child: MyContainer(
                             text: "6",
                             renk1: widget.birincilRenk,
-                            renk2: Colors.black,
+                            renk2: const Color.fromARGB(255, 255, 255, 255),
                           )),
                       GestureDetector(
                           onTap: () => sayilaraBasildi(9),
                           child: MyContainer(
                             text: "9",
                             renk1: widget.birincilRenk,
-                            renk2: Colors.black,
+                            renk2: const Color.fromARGB(255, 255, 255, 255),
                           )),
                       GestureDetector(
                         onTap: () {

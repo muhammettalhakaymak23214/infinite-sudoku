@@ -20,6 +20,7 @@ class MyContainerIcon extends StatelessWidget {
       child: Icon(
         simge,
         size: 40,
+        color: const Color.fromARGB(255, 255, 255, 255),
       ),
     );
   }
