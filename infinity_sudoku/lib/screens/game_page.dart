@@ -57,6 +57,31 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
     _controller.forward();
   }
 
+  void reset() {
+    fetchData();
+    _timer.cancel();
+    _seconds = 0;
+    _minutes = 0;
+    _startTimer();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    );
+    _animation = Tween<double>(
+      begin: -30.0,
+      end: 30.0,
+    ).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    )..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _controller.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          _controller.forward();
+        }
+      });
+    _controller.forward();
+  }
+
   Future<void> fetchData() async {
     final response =
         await http.get(Uri.parse('https://sudoku-api.vercel.app/api/dosuku'));
@@ -194,6 +219,8 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
     }
     if (omeygat == 0) {
       debugPrint("basariliiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+      _stopTimer();
+      _dogruSonuc(context);
     } else {
       debugPrint("fdsdddddddddddddddddddddddddddddddd");
     }
@@ -329,6 +356,74 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                     ),
                   );
                 },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Future<void> _dogruSonuc(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.black.withOpacity(0.97),
+      builder: (BuildContext context) {
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0),
+              side: BorderSide(color: widget.ikincilRenk, width: 2.0),
+            ),
+            backgroundColor: widget.birincilRenk,
+            title: Text(
+              'Tebrikler Sudokuyu Çözdün',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white),
+            ),
+            content: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(
+                    Icons.child_care,
+                    size: 50,
+                    color: Colors.white,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    '$_minutes:${_seconds < 10 ? '0$_seconds' : _seconds}',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    _startTimer();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MenuPage()));
+                  },
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      color: widget.ikincilRenk,
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: Colors.white, width: 2.5),
+                    ),
+                    child: Icon(
+                      Icons.play_arrow,
+                      size: 40,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -639,8 +734,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                           )),
                       GestureDetector(
                         onTap: () {
-                          sudokuCoz(0);
-                          ayarSudokuDuzenle("B");
+                          reset();
                           setState(() {});
                         },
                         child: MyContainerIcon(
