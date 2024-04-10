@@ -57,6 +57,10 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
     _controller.forward();
   }
 
+  void zorlukAyariYap() {
+    if (widget.oyunModuTercihi == "kolay") {}
+  }
+
   void reset() {
     fetchData();
     _timer.cancel();
@@ -304,24 +308,24 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
               side: BorderSide(color: widget.ikincilRenk, width: 2.0),
             ),
             backgroundColor: widget.birincilRenk,
-            title: Text(
+            title: const Text(
               'Oyun Durdu',
               textAlign: TextAlign.center,
-              style: TextStyle(color: widget.ikincilRenk),
+              style: TextStyle(color: Colors.white),
             ),
             content: Container(
-              child: Column(
+              child: const Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Icon(
                     Icons.timer_off,
                     size: 50,
-                    color: widget.ikincilRenk,
+                    color: Colors.white,
                   ),
                   SizedBox(height: 20),
                   Text(
                     'Başlatmak için devam edebilirsiniz.',
-                    style: TextStyle(color: widget.ikincilRenk),
+                    style: TextStyle(color: Colors.white),
                   ),
                 ],
               ),
@@ -346,7 +350,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                             borderRadius: BorderRadius.circular(5),
                             border: Border.all(color: Colors.white, width: 2.5),
                           ),
-                          child: Icon(
+                          child: const Icon(
                             Icons.play_arrow,
                             size: 40,
                             color: Colors.white,
@@ -444,7 +448,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 0, 0, 0),
+      backgroundColor: Color.fromARGB(0, 242, 3, 3),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
