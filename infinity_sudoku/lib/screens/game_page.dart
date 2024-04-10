@@ -58,7 +58,26 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
   }
 
   void zorlukAyariYap() {
-    if (widget.oyunModuTercihi == "kolay") {}
+    if (widget.oyunModuTercihi == "Kolay") {
+      ipucuGetir();
+      ipucuGetir();
+      ipucuGetir();
+      ipucuGetir();
+      ipucuGetir();
+      ipucuGetir();
+      ipucuGetir();
+      ipucuGetir();
+      ipucuGetir();
+      ipucuGetir();
+    } else if (widget.oyunModuTercihi == "Orta") {
+      ipucuGetir();
+      ipucuGetir();
+      ipucuGetir();
+      ipucuGetir();
+      ipucuGetir();
+    } else {
+      debugPrint("zorluk zormuş--------------------------------");
+    }
   }
 
   void reset() {
@@ -167,6 +186,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
     cevapSudoku[8] = cevap_row_9;
     ayarSudokuOlustur();
     setState(() {});
+    zorlukAyariYap();
   }
 
   void sayilaraBasildi(int sayi) {
