@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:infinity_sudoku/consts/colors.dart';
 import 'package:infinity_sudoku/screens/game_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'dart:io';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -28,6 +31,8 @@ class _MenuPageState extends State<MenuPage> {
     _loadSelectedColor();
     super.initState();
   }
+
+  final player = AudioCache();
 
   Future<void> _loadSelectedColor() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -357,6 +362,8 @@ class _MenuPageState extends State<MenuPage> {
                       onPressed: () {
                         setState(() {
                           _isMenuOpen = !_isMenuOpen;
+                          final player = AudioPlayer();
+                          player.play(AssetSource('ses.mp3'));
                         });
                       },
                       icon: Container(
@@ -487,6 +494,8 @@ class _MenuPageState extends State<MenuPage> {
                                     setState(() {
                                       i--;
                                     });
+                                    final player = AudioPlayer();
+                                    player.play(AssetSource('ses.mp3'));
                                   },
                                 ),
                               ),
@@ -526,6 +535,8 @@ class _MenuPageState extends State<MenuPage> {
                                     setState(() {
                                       i--;
                                     });
+                                    final player = AudioPlayer();
+                                    player.play(AssetSource('ses.mp3'));
                                   },
                                 ),
                               ),
@@ -547,6 +558,8 @@ class _MenuPageState extends State<MenuPage> {
                                         birincilRenk: _primaryColor,
                                         ikincilRenk: _secondaryColor,
                                       )));
+                          final player = AudioPlayer();
+                          player.play(AssetSource('ses.mp3'));
                         },
                         child: Container(
                           alignment: Alignment.center,
@@ -593,7 +606,10 @@ class _MenuPageState extends State<MenuPage> {
                               border: Border.all(color: Colors.white, width: 2),
                               borderRadius: BorderRadius.circular(5)),
                           child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                final player = AudioPlayer();
+                                player.play(AssetSource('ses.mp3'));
+                              },
                               icon: Icon(
                                 Icons.settings,
                                 size: (screenHeight / 100) * 3,
@@ -605,6 +621,11 @@ class _MenuPageState extends State<MenuPage> {
                         onTap: () {
                           //----------------
                           _istatistikler(context);
+
+                          final player3 = AudioPlayer();
+//
+                          player3
+                              .play(UrlSource('assets/pokemon-a-button.wav'));
                         },
                         child: Container(
                           height: (screenWidth / 100) * 12,
@@ -620,6 +641,8 @@ class _MenuPageState extends State<MenuPage> {
                                 _loadSavedSudokuCount();
                                 _loadSavedSudokuSuresi();
                                 _istatistikler(context);
+                                final player = AudioPlayer();
+                                player.play(AssetSource('ses.mp3'));
                               },
                               icon: Icon(
                                 Icons.menu,
@@ -641,7 +664,10 @@ class _MenuPageState extends State<MenuPage> {
                               border: Border.all(color: Colors.white, width: 2),
                               borderRadius: BorderRadius.circular(5)),
                           child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                final player = AudioPlayer();
+                                player.play(AssetSource('ses.mp3'));
+                              },
                               icon: Icon(
                                 Icons.warning,
                                 size: (screenHeight / 100) * 3,

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -215,6 +216,8 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
     ayarSudokuDuzenle("Y");
     //setState(() {});
     hesapla();
+    final player = AudioPlayer();
+    player.play(AssetSource('ses.mp3'));
   }
 
   void ipucuGetir() {
@@ -246,6 +249,8 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
         "i";
     ipucuListesi.clear();
     hesapla();
+    final player = AudioPlayer();
+    player.play(AssetSource('ses.mp3'));
   }
 
   void hesapla() {
@@ -392,6 +397,8 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                         onTap: () {
                           _startTimer();
                           Navigator.of(context).pop();
+                          final player = AudioPlayer();
+                          player.play(AssetSource('ses.mp3'));
                         },
                         child: Container(
                           height: 50,
@@ -468,6 +475,8 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                     _startTimer();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => MenuPage()));
+                    final player = AudioPlayer();
+                    player.play(AssetSource('ses.mp3'));
                   },
                   child: Container(
                     height: 50,
@@ -523,6 +532,8 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => MenuPage()));
+                      final player = AudioPlayer();
+                      player.play(AssetSource('ses.mp3'));
                     },
                     child: Container(
                         // height: 50,
@@ -567,6 +578,8 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                     onTap: () {
                       _stopTimer();
                       _showAlertDialog(context);
+                      final player = AudioPlayer();
+                      player.play(AssetSource('ses.mp3'));
                     },
                     child: Container(
                         // height: 50,
@@ -665,6 +678,8 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                       }
                       secilenValue = value;
                       setState(() {});
+                      final player = AudioPlayer();
+                      player.play(AssetSource('ses.mp3'));
                     },
                     child: Container(
                       margin: EdgeInsets.all(2.0),
@@ -737,6 +752,8 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                           sudokuCoz(0);
                           ayarSudokuDuzenle("B");
                           setState(() {});
+                          final player = AudioPlayer();
+                          player.play(AssetSource('ses.mp3'));
                         },
                         child: MyContainerIcon(
                           simge: Icons.clear,
@@ -821,6 +838,8 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                         onTap: () {
                           reset();
                           setState(() {});
+                          final player = AudioPlayer();
+                          player.play(AssetSource('ses.mp3'));
                         },
                         child: MyContainerIcon(
                           simge: Icons.restart_alt_rounded,
