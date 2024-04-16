@@ -4,17 +4,22 @@ class MyContainer extends StatelessWidget {
   final String text; // Dinamik metin için bir değişken tanımlayın
   final Color renk1;
   final Color renk2;
+  final double yukseklik;
 
   // Constructor oluşturun ve text değişkenini alın
   const MyContainer(
-      {Key? key, required this.text, required this.renk1, required this.renk2})
+      {Key? key,
+      required this.text,
+      required this.renk1,
+      required this.renk2,
+      required this.yukseklik})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      height: 60,
-      width: 60,
+      height: yukseklik * 2,
+      width: yukseklik * 2,
       decoration: BoxDecoration(
           color: renk1,
           borderRadius: BorderRadius.circular(200),
@@ -22,8 +27,8 @@ class MyContainer extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style:
-            TextStyle(fontSize: 30, color: renk2, fontWeight: FontWeight.w900),
+        style: TextStyle(
+            fontSize: yukseklik, color: renk2, fontWeight: FontWeight.w900),
       ),
     );
   }

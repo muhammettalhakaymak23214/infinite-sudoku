@@ -10,7 +10,7 @@ var colorSecondary1 = Color.fromARGB(249, 3, 93, 4);
 var colorPrimary2 = Color.fromARGB(255, 0, 20, 61);
 var colorSecondary2 = Color.fromARGB(255, 53, 57, 0);
 
-var colorPrimary3 = Color.fromARGB(248, 171, 119, 161);
+var colorPrimary3 = Color.fromARGB(255, 171, 119, 161);
 var colorSecondary3 = Color.fromARGB(255, 93, 148, 107);
 
 var colorPrimary4 = Color.fromARGB(248, 0, 0, 0);

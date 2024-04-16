@@ -8,6 +8,7 @@ import 'package:infinity_sudoku/consts/listeler.dart';
 import 'package:infinity_sudoku/consts/my_container.dart';
 import 'package:infinity_sudoku/consts/my_container_icon.dart';
 import 'package:infinity_sudoku/screens/menu_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GamePage extends StatefulWidget {
   final String oyunModuTercihi;
@@ -24,6 +25,8 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
+  int cozulenSudokuSuresi = 0;
+  int cozulenSudokuSayisi = 0;
   int secilenValue = 404;
   int kordinatAyarRow = 404;
   int kordinatAyarCol = 404;
@@ -164,6 +167,24 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
     }
   }
 
+  Future<void> _saveSudokuSayisi() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    cozulenSudokuSayisi = prefs.getInt('cozulenSudokuSayisi') ?? 0;
+    setState(() {
+      cozulenSudokuSayisi++;
+    });
+    await prefs.setInt('cozulenSudokuSayisi', cozulenSudokuSayisi);
+  }
+
+  Future<void> _saveSudokuSuresi(int timeSudoku) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    cozulenSudokuSuresi = prefs.getInt('cozulenSudokuSuresi') ?? 0;
+    setState(() {
+      cozulenSudokuSuresi = cozulenSudokuSuresi + timeSudoku;
+    });
+    await prefs.setInt('cozulenSudokuSuresi', cozulenSudokuSuresi);
+  }
+
   void sudokuOlustur() {
     soruSudoku[0] = row_1;
     soruSudoku[1] = row_2;
@@ -244,6 +265,11 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
     if (omeygat == 0) {
       debugPrint("basariliiiiiiiiiiiiiiiiiiiiiiiiiiiii");
       _stopTimer();
+      _saveSudokuSayisi();
+      int timeSudoku = 0;
+      timeSudoku = (_minutes * 60) + _seconds;
+
+      _saveSudokuSuresi(timeSudoku);
       _dogruSonuc(context);
     } else {
       debugPrint("fdsdddddddddddddddddddddddddddddddd");
@@ -315,6 +341,8 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
 
   @override
   Future<void> _showAlertDialog(BuildContext context) async {
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.width;
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -328,24 +356,27 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
               side: BorderSide(color: widget.ikincilRenk, width: 2.0),
             ),
             backgroundColor: widget.birincilRenk,
-            title: const Text(
+            title: Text(
               'Oyun Durdu',
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(
+                  color: Colors.white, fontSize: (screenHeight / 100) * 2),
             ),
             content: Container(
-              child: const Column(
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Icon(
                     Icons.timer_off,
-                    size: 50,
+                    size: (screenHeight / 100) * 3,
                     color: Colors.white,
                   ),
                   SizedBox(height: 20),
                   Text(
                     'Başlatmak için devam edebilirsiniz.',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: (screenHeight / 100) * 2),
                   ),
                 ],
               ),
@@ -370,9 +401,9 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                             borderRadius: BorderRadius.circular(5),
                             border: Border.all(color: Colors.white, width: 2.5),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.play_arrow,
-                            size: 40,
+                            size: (screenHeight / 100) * 2,
                             color: Colors.white,
                           ),
                         ),
@@ -390,6 +421,8 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
 
   @override
   Future<void> _dogruSonuc(BuildContext context) async {
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.width;
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -406,7 +439,8 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
             title: Text(
               'Tebrikler Sudokuyu Çözdün',
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(
+                  color: Colors.white, fontSize: (screenHeight / 100) * 2),
             ),
             content: Container(
               child: Column(
@@ -414,13 +448,15 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                 children: <Widget>[
                   Icon(
                     Icons.child_care,
-                    size: 50,
+                    size: (screenHeight / 100) * 2,
                     color: Colors.white,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
                     '$_minutes:${_seconds < 10 ? '0$_seconds' : _seconds}',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: (screenHeight / 100) * 2),
                   ),
                 ],
               ),
@@ -443,7 +479,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                     ),
                     child: Icon(
                       Icons.play_arrow,
-                      size: 40,
+                      size: (screenHeight / 100) * 2,
                       color: Colors.white,
                     ),
                   ),
@@ -467,13 +503,19 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Color.fromARGB(0, 242, 3, 3),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Expanded(
-              flex: 2,
+            flex: 1,
+            child: SizedBox(),
+          ),
+          Expanded(
+              flex: 8,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -494,9 +536,9 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                             border: Border.all(
                                 color: Color.fromARGB(255, 255, 255, 255),
                                 width: 2.5)),
-                        child: const Icon(
+                        child: Icon(
                           Icons.arrow_back,
-                          size: 40,
+                          size: (screenHeight / 100) * 3,
                           color: Color.fromARGB(255, 255, 255, 255),
                         )),
                   ),
@@ -515,7 +557,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                     child: Text(
                       "$_minutes:${_seconds < 10 ? '0$_seconds' : _seconds}",
                       style: TextStyle(
-                          fontSize: 40,
+                          fontSize: (screenHeight / 100) * 3,
                           color: Color.fromARGB(255, 255, 255, 255),
                           fontWeight: FontWeight.w900),
                       textAlign: TextAlign.center,
@@ -540,14 +582,18 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                                 width: 2.5)),
                         child: Icon(
                           Icons.pause,
-                          size: 40,
+                          size: (screenHeight / 100) * 3,
                           color: const Color.fromARGB(255, 255, 255, 255),
                         )),
                   ),
                 ],
               )),
           Expanded(
-            flex: 8,
+            flex: 1,
+            child: SizedBox(),
+          ),
+          Expanded(
+            flex: 36,
             child: Padding(
               padding: const EdgeInsets.only(left: 8, right: 8),
               child: GridView.builder(
@@ -630,7 +676,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                         child: Text(
                           '$value',
                           style: TextStyle(
-                            fontSize: 25.0,
+                            fontSize: (screenHeight / 100) * 3,
                             color: textColor,
                             fontWeight: FontWeight.w900,
                             fontStyle: fontTarzi,
@@ -643,9 +689,13 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
               ),
             ),
           ),
+          Expanded(
+            flex: 1,
+            child: SizedBox(),
+          ),
           // ! Tuş Takımı Başı ----------------------------------------------------------------------------
           Expanded(
-            flex: 5,
+            flex: 22,
             child: Container(
               margin: EdgeInsets.only(top: 0, left: 10, right: 10),
               decoration: BoxDecoration(
@@ -664,6 +714,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                             text: "1",
                             renk1: widget.birincilRenk,
                             renk2: const Color.fromARGB(255, 255, 255, 255),
+                            yukseklik: (screenHeight / 100) * 3,
                           )),
                       GestureDetector(
                           onTap: () => sayilaraBasildi(4),
@@ -671,6 +722,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                             text: "4",
                             renk1: widget.birincilRenk,
                             renk2: const Color.fromARGB(255, 255, 255, 255),
+                            yukseklik: (screenHeight / 100) * 3,
                           )),
                       GestureDetector(
                           onTap: () => sayilaraBasildi(7),
@@ -678,6 +730,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                             text: "7",
                             renk1: widget.birincilRenk,
                             renk2: const Color.fromARGB(255, 255, 255, 255),
+                            yukseklik: (screenHeight / 100) * 3,
                           )),
                       GestureDetector(
                         onTap: () {
@@ -688,6 +741,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                         child: MyContainerIcon(
                           simge: Icons.clear,
                           renk1: widget.birincilRenk,
+                          yukseklik: (screenHeight / 100) * 3,
                         ),
                       ),
                     ],
@@ -702,6 +756,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                             text: "2",
                             renk1: widget.birincilRenk,
                             renk2: const Color.fromARGB(255, 255, 255, 255),
+                            yukseklik: (screenHeight / 100) * 3,
                           )),
                       GestureDetector(
                           onTap: () => sayilaraBasildi(5),
@@ -709,6 +764,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                             text: "5",
                             renk1: widget.birincilRenk,
                             renk2: const Color.fromARGB(255, 255, 255, 255),
+                            yukseklik: (screenHeight / 100) * 3,
                           )),
                       GestureDetector(
                           onTap: () => sayilaraBasildi(8),
@@ -716,6 +772,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                             text: "8",
                             renk1: widget.birincilRenk,
                             renk2: const Color.fromARGB(255, 255, 255, 255),
+                            yukseklik: (screenHeight / 100) * 3,
                           )),
                       GestureDetector(
                         onTap: () {
@@ -725,6 +782,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                         child: MyContainerIcon(
                           simge: Icons.lightbulb_rounded,
                           renk1: widget.birincilRenk,
+                          yukseklik: (screenHeight / 100) * 3,
                         ),
                       ),
                     ],
@@ -741,6 +799,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                             text: "3",
                             renk1: widget.birincilRenk,
                             renk2: const Color.fromARGB(255, 255, 255, 255),
+                            yukseklik: (screenHeight / 100) * 3,
                           )),
                       GestureDetector(
                           onTap: () => sayilaraBasildi(6),
@@ -748,6 +807,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                             text: "6",
                             renk1: widget.birincilRenk,
                             renk2: const Color.fromARGB(255, 255, 255, 255),
+                            yukseklik: (screenHeight / 100) * 3,
                           )),
                       GestureDetector(
                           onTap: () => sayilaraBasildi(9),
@@ -755,6 +815,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                             text: "9",
                             renk1: widget.birincilRenk,
                             renk2: const Color.fromARGB(255, 255, 255, 255),
+                            yukseklik: (screenHeight / 100) * 3,
                           )),
                       GestureDetector(
                         onTap: () {
@@ -764,6 +825,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                         child: MyContainerIcon(
                           simge: Icons.restart_alt_rounded,
                           renk1: widget.birincilRenk,
+                          yukseklik: (screenHeight / 100) * 3,
                         ),
                       ),
                     ],
@@ -771,6 +833,10 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                 ],
               ),
             ),
+          ),
+          Expanded(
+            flex: 1,
+            child: SizedBox(),
           ),
           // ! Tuş Takımı Sonu ----------------------------------------------------------------------------
         ],
