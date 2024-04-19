@@ -667,6 +667,7 @@ class _MenuPageState extends State<MenuPage> {
                               onPressed: () {
                                 final player = AudioPlayer();
                                 player.play(AssetSource('ses.mp3'));
+                                //notificationServices.sendNotification();
                               },
                               icon: Icon(
                                 Icons.warning,
@@ -707,6 +708,8 @@ class _MenuPageState extends State<MenuPage> {
                     child: IconButton(
                       onPressed: () {
                         changeColor(colorPrimary1, colorSecondary1);
+                        final player = AudioPlayer();
+                        player.play(AssetSource('ses.mp3'));
                       },
                       icon: Icon(
                         Icons.square_outlined,
@@ -726,6 +729,8 @@ class _MenuPageState extends State<MenuPage> {
                     child: IconButton(
                       onPressed: () {
                         changeColor(colorPrimary2, colorSecondary2);
+                        final player = AudioPlayer();
+                        player.play(AssetSource('ses.mp3'));
                       },
                       icon: Icon(
                         Icons.square_outlined,
@@ -744,6 +749,8 @@ class _MenuPageState extends State<MenuPage> {
                     child: IconButton(
                       onPressed: () {
                         changeColor(colorPrimary3, colorSecondary3);
+                        final player = AudioPlayer();
+                        player.play(AssetSource('ses.mp3'));
                       },
                       icon: Icon(
                         Icons.square_outlined,
@@ -762,6 +769,8 @@ class _MenuPageState extends State<MenuPage> {
                     child: IconButton(
                       onPressed: () {
                         changeColor(colorPrimary4, colorSecondary4);
+                        final player = AudioPlayer();
+                        player.play(AssetSource('ses.mp3'));
                       },
                       icon: Icon(
                         Icons.square_outlined,
@@ -781,6 +790,8 @@ class _MenuPageState extends State<MenuPage> {
                     child: IconButton(
                       onPressed: () {
                         changeColor(colorPrimary5, colorSecondary5);
+                        final player = AudioPlayer();
+                        player.play(AssetSource('ses.mp3'));
                       },
                       icon: Icon(
                         Icons.square_outlined,
