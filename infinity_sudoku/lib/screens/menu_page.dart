@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:infinity_sudoku/consts/colors.dart';
 import 'package:infinity_sudoku/screens/game_page.dart';
+import 'package:infinity_sudoku/screens/hakk%C4%B1imda_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -26,8 +27,7 @@ class _MenuPageState extends State<MenuPage> {
   List<String> oyunModu = ["Kolay", "Orta", "Zor"];
   int i = 0;
   String oyunModuTercihi = "Kolay";
-  bool isSwitchedSes = false;
-  bool isSwitchedTitresim = false;
+
   bool isSwitchedBildirim = false;
   bool sesDurumu = false;
   bool titresimDurumu = false;
@@ -743,7 +743,10 @@ class _MenuPageState extends State<MenuPage> {
                               onPressed: () {
                                 sesCal();
                                 titresimCal();
-                                //notificationServices.sendNotification();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HakkimdaPage()));
                               },
                               icon: Icon(
                                 Icons.warning,

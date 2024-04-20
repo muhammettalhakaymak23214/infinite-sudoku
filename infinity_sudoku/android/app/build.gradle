@@ -23,8 +23,9 @@ if (flutterVersionName == null) {
 }
 
 android {
+    
     namespace "com.example.infinity_sudoku"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
