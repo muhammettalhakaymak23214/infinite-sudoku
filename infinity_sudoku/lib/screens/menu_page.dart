@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:io';
+import 'package:vibration/vibration.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -25,19 +26,42 @@ class _MenuPageState extends State<MenuPage> {
   List<String> oyunModu = ["Kolay", "Orta", "Zor"];
   int i = 0;
   String oyunModuTercihi = "Kolay";
+  bool isSwitchedSes = false;
+  bool isSwitchedTitresim = false;
+  bool isSwitchedBildirim = false;
+  bool sesDurumu = false;
+  bool titresimDurumu = false;
 
   @override
   void initState() {
     _loadSelectedColor();
+    _getirSecilenSes();
+    _getirSecilenTitresim();
     super.initState();
   }
 
-  final player = AudioCache();
+  void titresimCal() async {
+    // Telefonun titreşim özelliğinin bulunup bulunmadığını kontrol et
+    bool? hasVibrator = await Vibration.hasVibrator();
+
+    // hasVibrator değeri null değilse ve true ise, titreşimi başlat
+    if ((hasVibrator == true) && (titresimDurumu == true)) {
+      Vibration.vibrate(duration: 100);
+    }
+  }
+
+  void sesCal() {
+    if (sesDurumu == true) {
+      final player = AudioPlayer();
+      player.play(AssetSource('ses.mp3'));
+    }
+  }
 
   Future<void> _loadSelectedColor() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? colorValue = prefs.getInt('birincilRenk');
     int? colorValue2 = prefs.getInt('ikincilRenk');
+
     if (colorValue != null && colorValue2 != null) {
       setState(() {
         _primaryColor = Color(colorValue);
@@ -48,6 +72,28 @@ class _MenuPageState extends State<MenuPage> {
       _primaryColor = Colors.blue;
       _secondaryColor = Colors.blue;
     }
+  }
+
+  Future<void> _kaydetSecilenSes(bool secilenSesDurumu) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('sesDurumu', secilenSesDurumu);
+    sesDurumu = prefs.getBool('sesDurumu') ?? false;
+  }
+
+  Future<void> _getirSecilenSes() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    sesDurumu = prefs.getBool('sesDurumu') ?? false;
+  }
+
+  Future<void> _kaydetSecilenTitresim(bool secilenTitresimDurumu) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('titresimDurumu', secilenTitresimDurumu);
+    titresimDurumu = prefs.getBool('titresimDurumu') ?? false;
+  }
+
+  Future<void> _getirSecilenTitresim() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    titresimDurumu = prefs.getBool('titresimDurumu') ?? false;
   }
 
   Future<void> _saveSelectedColor(String colorKey, int colorValue) async {
@@ -258,6 +304,10 @@ class _MenuPageState extends State<MenuPage> {
       );
     }
 
+    void guncelle(setState) {
+      setState(() {});
+    }
+
     @override
     Future<void> _ayarlar(BuildContext context) async {
       final double screenHeight = MediaQuery.of(context).size.height;
@@ -267,79 +317,110 @@ class _MenuPageState extends State<MenuPage> {
         barrierDismissible: true,
         barrierColor: Color.fromARGB(255, 0, 0, 0).withOpacity(0.80),
         builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0),
-              side: BorderSide(color: _secondaryColor, width: 2.0),
-            ),
-            backgroundColor: _primaryColor,
-            title: Text(
-              'İstatistikler',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.white, fontSize: (screenHeight / 100) * 3),
-            ),
-            content: Container(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Divider(color: Colors.white),
-                  SizedBox(height: 20),
-                  Container(
-                    height: (screenHeight / 100) * 5,
-                    width: (screenWidth / 100) * 60,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: _secondaryColor,
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: Colors.white)),
-                    child: Text(
-                      'Çözülen Sudoku Sayısı: 123',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: (screenHeight / 100) * 1.5),
-                    ),
-                  ),
-                  SizedBox(
-                    height: (screenHeight / 100) * 2,
-                  ),
-                  Container(
-                    height: (screenHeight / 100) * 5,
-                    width: (screenWidth / 100) * 60,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: _secondaryColor,
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: Colors.white)),
-                    child: Text(
-                      'Geçirilen Zaman: 123',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: (screenHeight / 100) * 1.5),
-                    ),
-                  ),
-                  SizedBox(
-                    height: (screenHeight / 100) * 2,
-                  ),
-                  Container(
-                    height: (screenHeight / 100) * 5,
-                    width: (screenWidth / 100) * 60,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: _secondaryColor,
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: Colors.white)),
-                    child: Text(
-                      'Ortalama Sudoku Çözme Süresi: 123',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: (screenHeight / 100) * 1.5),
-                    ),
-                  ),
-                ],
+          return StatefulBuilder(builder: (context, StateSetter setState) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                side: BorderSide(color: _secondaryColor, width: 2.0),
               ),
-            ),
-          );
+              backgroundColor: _primaryColor,
+              title: Text(
+                'Ayarlar',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white, fontSize: (screenHeight / 100) * 3),
+              ),
+              content: Container(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Divider(color: Colors.white),
+                    SizedBox(height: 20),
+                    Container(
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Bildirimler : ",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: (screenHeight / 100) * 1.5),
+                        ),
+                        Switch(
+                          value: isSwitchedBildirim,
+                          onChanged: (value) {
+                            sesCal();
+                            titresimCal();
+                            isSwitchedBildirim = value;
+                            guncelle(setState);
+                          },
+                          activeTrackColor: Colors.lightGreenAccent,
+                          activeColor: Colors.green,
+                        ),
+                      ],
+                    )),
+                    SizedBox(
+                      height: (screenHeight / 100) * 2,
+                    ),
+                    Container(
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Ses : ",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: (screenHeight / 100) * 1.5),
+                        ),
+                        Switch(
+                          value: sesDurumu,
+                          onChanged: (value) {
+                            sesCal();
+                            titresimCal();
+                            sesDurumu = value;
+                            _kaydetSecilenSes(value);
+                            guncelle(setState);
+                          },
+                          activeTrackColor: Colors.lightGreenAccent,
+                          activeColor: Colors.green,
+                        ),
+                      ],
+                    )),
+                    SizedBox(
+                      height: (screenHeight / 100) * 2,
+                    ),
+                    Container(
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Titreşim : ",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: (screenHeight / 100) * 1.5),
+                        ),
+                        Switch(
+                          value: titresimDurumu,
+                          onChanged: (value) {
+                            sesCal();
+                            titresimCal();
+                            titresimDurumu = value;
+                            _kaydetSecilenTitresim(titresimDurumu);
+                            guncelle(setState);
+                          },
+                          activeTrackColor: Colors.lightGreenAccent,
+                          activeColor: Colors.green,
+                        ),
+                      ],
+                    )),
+                    SizedBox(
+                      height: (screenHeight / 100) * 2,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          });
         },
       );
     }
@@ -362,8 +443,8 @@ class _MenuPageState extends State<MenuPage> {
                       onPressed: () {
                         setState(() {
                           _isMenuOpen = !_isMenuOpen;
-                          final player = AudioPlayer();
-                          player.play(AssetSource('ses.mp3'));
+                          sesCal();
+                          titresimCal();
                         });
                       },
                       icon: Container(
@@ -492,10 +573,10 @@ class _MenuPageState extends State<MenuPage> {
                                       size: (screenHeight / 100) * 3),
                                   onPressed: () {
                                     setState(() {
+                                      sesCal();
+                                      titresimCal();
                                       i--;
                                     });
-                                    final player = AudioPlayer();
-                                    player.play(AssetSource('ses.mp3'));
                                   },
                                 ),
                               ),
@@ -533,10 +614,10 @@ class _MenuPageState extends State<MenuPage> {
                                       size: (screenHeight / 100) * 3),
                                   onPressed: () {
                                     setState(() {
+                                      sesCal();
+                                      titresimCal();
                                       i--;
                                     });
-                                    final player = AudioPlayer();
-                                    player.play(AssetSource('ses.mp3'));
                                   },
                                 ),
                               ),
@@ -549,6 +630,8 @@ class _MenuPageState extends State<MenuPage> {
                       ),
                       GestureDetector(
                         onTap: () {
+                          sesCal();
+                          titresimCal();
                           oyunModuTercihi = oyunModu[i % 3];
                           Navigator.push(
                               context,
@@ -558,8 +641,6 @@ class _MenuPageState extends State<MenuPage> {
                                         birincilRenk: _primaryColor,
                                         ikincilRenk: _secondaryColor,
                                       )));
-                          final player = AudioPlayer();
-                          player.play(AssetSource('ses.mp3'));
                         },
                         child: Container(
                           alignment: Alignment.center,
@@ -607,8 +688,9 @@ class _MenuPageState extends State<MenuPage> {
                               borderRadius: BorderRadius.circular(5)),
                           child: IconButton(
                               onPressed: () {
-                                final player = AudioPlayer();
-                                player.play(AssetSource('ses.mp3'));
+                                sesCal();
+                                titresimCal();
+                                _ayarlar(context);
                               },
                               icon: Icon(
                                 Icons.settings,
@@ -620,12 +702,6 @@ class _MenuPageState extends State<MenuPage> {
                       GestureDetector(
                         onTap: () {
                           //----------------
-                          _istatistikler(context);
-
-                          final player3 = AudioPlayer();
-//
-                          player3
-                              .play(UrlSource('assets/pokemon-a-button.wav'));
                         },
                         child: Container(
                           height: (screenWidth / 100) * 12,
@@ -637,12 +713,12 @@ class _MenuPageState extends State<MenuPage> {
                               borderRadius: BorderRadius.circular(5)),
                           child: IconButton(
                               onPressed: () {
+                                sesCal();
+                                titresimCal();
                                 // cozulenSudokuSayisi
                                 _loadSavedSudokuCount();
                                 _loadSavedSudokuSuresi();
                                 _istatistikler(context);
-                                final player = AudioPlayer();
-                                player.play(AssetSource('ses.mp3'));
                               },
                               icon: Icon(
                                 Icons.menu,
@@ -665,8 +741,8 @@ class _MenuPageState extends State<MenuPage> {
                               borderRadius: BorderRadius.circular(5)),
                           child: IconButton(
                               onPressed: () {
-                                final player = AudioPlayer();
-                                player.play(AssetSource('ses.mp3'));
+                                sesCal();
+                                titresimCal();
                                 //notificationServices.sendNotification();
                               },
                               icon: Icon(
@@ -707,9 +783,9 @@ class _MenuPageState extends State<MenuPage> {
                         borderRadius: BorderRadius.circular(5)),
                     child: IconButton(
                       onPressed: () {
+                        sesCal();
+                        titresimCal();
                         changeColor(colorPrimary1, colorSecondary1);
-                        final player = AudioPlayer();
-                        player.play(AssetSource('ses.mp3'));
                       },
                       icon: Icon(
                         Icons.square_outlined,
@@ -728,9 +804,9 @@ class _MenuPageState extends State<MenuPage> {
                         borderRadius: BorderRadius.circular(5)),
                     child: IconButton(
                       onPressed: () {
+                        sesCal();
+                        titresimCal();
                         changeColor(colorPrimary2, colorSecondary2);
-                        final player = AudioPlayer();
-                        player.play(AssetSource('ses.mp3'));
                       },
                       icon: Icon(
                         Icons.square_outlined,
@@ -748,9 +824,9 @@ class _MenuPageState extends State<MenuPage> {
                         borderRadius: BorderRadius.circular(5)),
                     child: IconButton(
                       onPressed: () {
+                        sesCal();
+                        titresimCal();
                         changeColor(colorPrimary3, colorSecondary3);
-                        final player = AudioPlayer();
-                        player.play(AssetSource('ses.mp3'));
                       },
                       icon: Icon(
                         Icons.square_outlined,
@@ -768,9 +844,9 @@ class _MenuPageState extends State<MenuPage> {
                         borderRadius: BorderRadius.circular(5)),
                     child: IconButton(
                       onPressed: () {
+                        sesCal();
+                        titresimCal();
                         changeColor(colorPrimary4, colorSecondary4);
-                        final player = AudioPlayer();
-                        player.play(AssetSource('ses.mp3'));
                       },
                       icon: Icon(
                         Icons.square_outlined,
@@ -789,9 +865,9 @@ class _MenuPageState extends State<MenuPage> {
                         borderRadius: BorderRadius.circular(5)),
                     child: IconButton(
                       onPressed: () {
+                        sesCal();
+                        titresimCal();
                         changeColor(colorPrimary5, colorSecondary5);
-                        final player = AudioPlayer();
-                        player.play(AssetSource('ses.mp3'));
                       },
                       icon: Icon(
                         Icons.square_outlined,

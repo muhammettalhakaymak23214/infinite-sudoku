@@ -10,6 +10,7 @@ import 'package:infinity_sudoku/consts/my_container.dart';
 import 'package:infinity_sudoku/consts/my_container_icon.dart';
 import 'package:infinity_sudoku/screens/menu_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vibration/vibration.dart';
 
 class GamePage extends StatefulWidget {
   final String oyunModuTercihi;
@@ -37,9 +38,14 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
   int kordinatRowRenk = 404;
   late AnimationController _controller;
   late Animation<double> _animation;
+  bool sesDurumu = false;
+  bool titresimDurumu = false;
+
   @override
   void initState() {
     super.initState();
+    _getirSecilenSes();
+    _getirSecilenTitresim();
     fetchData();
     _startTimer();
     _controller = AnimationController(
@@ -59,6 +65,33 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
         }
       });
     _controller.forward();
+  }
+
+  void titresimCal() async {
+    // Telefonun titreşim özelliğinin bulunup bulunmadığını kontrol et
+    bool? hasVibrator = await Vibration.hasVibrator();
+
+    // hasVibrator değeri null değilse ve true ise, titreşimi başlat
+    if ((hasVibrator == true) && (titresimDurumu == true)) {
+      Vibration.vibrate(duration: 100);
+    }
+  }
+
+  void sesCal() {
+    if (sesDurumu == true) {
+      final player = AudioPlayer();
+      player.play(AssetSource('ses.mp3'));
+    }
+  }
+
+  Future<void> _getirSecilenSes() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    sesDurumu = prefs.getBool('sesDurumu') ?? false;
+  }
+
+  Future<void> _getirSecilenTitresim() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    titresimDurumu = prefs.getBool('titresimDurumu') ?? false;
   }
 
   void zorlukAyariYap() {
@@ -212,12 +245,12 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
   }
 
   void sayilaraBasildi(int sayi) {
+    sesCal();
+    titresimCal();
     sudokuCoz(sayi);
     ayarSudokuDuzenle("Y");
     //setState(() {});
     hesapla();
-    final player = AudioPlayer();
-    player.play(AssetSource('ses.mp3'));
   }
 
   void ipucuGetir() {
@@ -249,8 +282,6 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
         "i";
     ipucuListesi.clear();
     hesapla();
-    final player = AudioPlayer();
-    player.play(AssetSource('ses.mp3'));
   }
 
   void hesapla() {
@@ -395,10 +426,10 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                     child: Center(
                       child: GestureDetector(
                         onTap: () {
+                          sesCal();
+                          titresimCal();
                           _startTimer();
                           Navigator.of(context).pop();
-                          final player = AudioPlayer();
-                          player.play(AssetSource('ses.mp3'));
                         },
                         child: Container(
                           height: 50,
@@ -472,11 +503,11 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
               Center(
                 child: GestureDetector(
                   onTap: () {
+                    sesCal();
+                    titresimCal();
                     _startTimer();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => MenuPage()));
-                    final player = AudioPlayer();
-                    player.play(AssetSource('ses.mp3'));
                   },
                   child: Container(
                     height: 50,
@@ -530,10 +561,10 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                 children: [
                   GestureDetector(
                     onTap: () {
+                      sesCal();
+                      titresimCal();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => MenuPage()));
-                      final player = AudioPlayer();
-                      player.play(AssetSource('ses.mp3'));
                     },
                     child: Container(
                         // height: 50,
@@ -576,10 +607,10 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                   ),
                   GestureDetector(
                     onTap: () {
+                      sesCal();
+                      titresimCal();
                       _stopTimer();
                       _showAlertDialog(context);
-                      final player = AudioPlayer();
-                      player.play(AssetSource('ses.mp3'));
                     },
                     child: Container(
                         // height: 50,
@@ -657,6 +688,8 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
 
                   return GestureDetector(
                     onTap: () {
+                      sesCal();
+                      titresimCal();
                       print('Tıklanan hücre: $value  --- hucre: $row . $col');
                       if (ayarSudoku[row][col] == "B" ||
                           ayarSudoku[row][col] == "Y") {
@@ -678,8 +711,6 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                       }
                       secilenValue = value;
                       setState(() {});
-                      final player = AudioPlayer();
-                      player.play(AssetSource('ses.mp3'));
                     },
                     child: Container(
                       margin: EdgeInsets.all(2.0),
@@ -749,11 +780,11 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                           )),
                       GestureDetector(
                         onTap: () {
+                          sesCal();
+                          titresimCal();
                           sudokuCoz(0);
                           ayarSudokuDuzenle("B");
                           setState(() {});
-                          final player = AudioPlayer();
-                          player.play(AssetSource('ses.mp3'));
                         },
                         child: MyContainerIcon(
                           simge: Icons.clear,
@@ -793,6 +824,8 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                           )),
                       GestureDetector(
                         onTap: () {
+                          sesCal();
+                          titresimCal();
                           ipucuGetir();
                           setState(() {});
                         },
@@ -836,10 +869,10 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                           )),
                       GestureDetector(
                         onTap: () {
+                          sesCal();
+                          titresimCal();
                           reset();
                           setState(() {});
-                          final player = AudioPlayer();
-                          player.play(AssetSource('ses.mp3'));
                         },
                         child: MyContainerIcon(
                           simge: Icons.restart_alt_rounded,
