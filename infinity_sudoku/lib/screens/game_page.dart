@@ -506,6 +506,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                     sesCal();
                     titresimCal();
                     _startTimer();
+
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => MenuPage()));
                   },
@@ -532,15 +533,6 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
     );
   }
 
-  /*
-  TextButton(
-              child: Text('Tamam'),
-              onPressed: () {
-                _startTimer();
-                Navigator.of(context).pop();
-              },
-            ), */
-
   @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
@@ -563,6 +555,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                     onTap: () {
                       sesCal();
                       titresimCal();
+
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => MenuPage()));
                     },
@@ -896,57 +889,3 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
     );
   }
 }
-
-/*
- Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.generate(
-              10,
-              (index) => Container(
-                height: 30,
-                width: 30,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Butona tıklama işlemleri buraya yazılabilir
-                    sudokuCoz(index);
-                    if (index != 0) {
-                      ayarSudokuDuzenle("Y");
-                    } else {
-                      ayarSudokuDuzenle("B");
-                    }
-                    setState(() {});
-                  },
-                  child: Text('${index}'),
-                ),
-              ),
-            ),
-          ),
-const SizedBox(height: 20),
-
-
-           ElevatedButton(
-              onPressed: () {
-                int omeygat = 0;
-                int sayac = 0;
-                while (sayac < 9) {
-                  int sayac2 = 0;
-                  while (sayac2 < 9) {
-                    if (soruSudoku[sayac][sayac2] ==
-                        cevapSudoku[sayac][sayac2]) {
-                    } else {
-                      omeygat = 1;
-                    }
-                    sayac2++;
-                  }
-                  sayac++;
-                }
-                if (omeygat == 0) {
-                  debugPrint("basariliiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-                } else {
-                  debugPrint("fdsdddddddddddddddddddddddddddddddd");
-                }
-              },
-              child: Text("Hesapla")),
-
-
-*/

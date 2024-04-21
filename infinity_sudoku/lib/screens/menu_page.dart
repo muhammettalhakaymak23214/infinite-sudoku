@@ -1,22 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
+
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:infinity_sudoku/consts/colors.dart';
+
 import 'package:infinity_sudoku/screens/game_page.dart';
 import 'package:infinity_sudoku/screens/hakk%C4%B1imda_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'dart:io';
-import 'package:vibration/vibration.dart';
+
+import 'package:vibration/vibration.dart'; //
+import 'dart:async';
 
 class MenuPage extends StatefulWidget {
+  //
   const MenuPage({super.key});
 
   @override
   State<MenuPage> createState() => _MenuPageState();
 }
 
+class NotificationService {
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
+  void initialize() {
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    // Gerekli diğer ayarlamaları yapın
+  }
+
+  Future<void> showNotification() async {
+    var android = AndroidNotificationDetails('channel_id', 'channel_name');
+
+    var platform = NotificationDetails(android: android);
+    await flutterLocalNotificationsPlugin.show(0, 'Başlık', 'İçerik', platform,
+        payload: 'Bildirim payload');
+  }
+}
+
 class _MenuPageState extends State<MenuPage> {
+  final NotificationService notificationService = NotificationService();
   double ortalamaSayiSureSudokuYazilacak = 0;
   double ortalamaSayiSureSudoku = 0;
   int cozulenSudokuSuresi = 0;
@@ -336,6 +357,7 @@ class _MenuPageState extends State<MenuPage> {
                   children: <Widget>[
                     Divider(color: Colors.white),
                     SizedBox(height: 20),
+                    /*
                     Container(
                         child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -361,7 +383,7 @@ class _MenuPageState extends State<MenuPage> {
                     )),
                     SizedBox(
                       height: (screenHeight / 100) * 2,
-                    ),
+                    ),*/
                     Container(
                         child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -443,6 +465,8 @@ class _MenuPageState extends State<MenuPage> {
                       onPressed: () {
                         setState(() {
                           _isMenuOpen = !_isMenuOpen;
+                          NotificationService().initialize();
+                          // _showNotification();
                           sesCal();
                           titresimCal();
                         });

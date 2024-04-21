@@ -1,6 +1,9 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vibration/vibration.dart';
 
 class HakkimdaPage extends StatefulWidget {
   const HakkimdaPage({super.key});
@@ -10,8 +13,33 @@ class HakkimdaPage extends StatefulWidget {
 }
 
 class _HakkimdaPageState extends State<HakkimdaPage> {
-  Uri googleUrl =
-      Uri.parse('https://pub.dev/packages/flutter_inappwebview/install');
+  bool sesDurumu = false;
+  bool titresimDurumu = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getirSecilenSes();
+    _getirSecilenTitresim();
+  }
+
+  void titresimCal() async {
+    // Telefonun titreşim özelliğinin bulunup bulunmadığını kontrol et
+    bool? hasVibrator = await Vibration.hasVibrator();
+
+    // hasVibrator değeri null değilse ve true ise, titreşimi başlat
+    if ((hasVibrator == true) && (titresimDurumu == true)) {
+      Vibration.vibrate(duration: 100);
+    }
+  }
+
+  void sesCal() {
+    if (sesDurumu == true) {
+      final player = AudioPlayer();
+      player.play(AssetSource('ses.mp3'));
+    }
+  }
 
   Future<void> _launch(Uri url) async {
     await canLaunchUrl(url);
@@ -22,6 +50,16 @@ class _HakkimdaPageState extends State<HakkimdaPage> {
     if (!await launchUrl(url1)) {
       throw Exception('Could not launch url');
     }
+  }
+
+  Future<void> _getirSecilenSes() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    sesDurumu = prefs.getBool('sesDurumu') ?? false;
+  }
+
+  Future<void> _getirSecilenTitresim() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    titresimDurumu = prefs.getBool('titresimDurumu') ?? false;
   }
 
   @override
@@ -95,6 +133,8 @@ class _HakkimdaPageState extends State<HakkimdaPage> {
                       children: [
                         InkWell(
                           onTap: () {
+                            sesCal();
+                            titresimCal();
                             _launchURL(
                                 "https://www.linkedin.com/in/muhammet-talha-kaymak-932447195/");
                             // Butona tıklandığında yapılacak işlemler
@@ -132,6 +172,8 @@ class _HakkimdaPageState extends State<HakkimdaPage> {
                         ),
                         InkWell(
                           onTap: () {
+                            sesCal();
+                            titresimCal();
                             _launchURL(
                                 "https://github.com/muhammettalhakaymak23214");
                             // Butona tıklandığında yapılacak işlemler
@@ -169,6 +211,8 @@ class _HakkimdaPageState extends State<HakkimdaPage> {
                         ),
                         InkWell(
                           onTap: () {
+                            sesCal();
+                            titresimCal();
                             _launchURL(
                                 "https://www.instagram.com/muhammet__kaymak/");
                             // Butona tıklandığında yapılacak işlemler
@@ -272,6 +316,8 @@ class _HakkimdaPageState extends State<HakkimdaPage> {
                       children: [
                         InkWell(
                           onTap: () {
+                            sesCal();
+                            titresimCal();
                             _launchURL(
                                 "https://www.linkedin.com/in/serhat-%C3%A7elik-845678223/");
                             // Butona tıklandığında yapılacak işlemler
@@ -309,6 +355,8 @@ class _HakkimdaPageState extends State<HakkimdaPage> {
                         ),
                         InkWell(
                           onTap: () {
+                            sesCal();
+                            titresimCal();
                             _launchURL("https://github.com/theserce");
                             // Butona tıklandığında yapılacak işlemler
                           },
@@ -345,6 +393,8 @@ class _HakkimdaPageState extends State<HakkimdaPage> {
                         ),
                         InkWell(
                           onTap: () {
+                            sesCal();
+                            titresimCal();
                             _launchURL(
                                 "https://www.instagram.com/serce_official/");
                             // Butona tıklandığında yapılacak işlemler
@@ -444,6 +494,9 @@ class _HakkimdaPageState extends State<HakkimdaPage> {
                   ),
                   InkWell(
                     onTap: () {
+                      sesCal();
+                      titresimCal();
+
                       _launchURL(
                           "https://github.com/muhammettalhakaymak23214/infinite-sudoku");
                       // Butona tıklandığında yapılacak işlemler
